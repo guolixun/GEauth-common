@@ -1,0 +1,302 @@
+<!DOCTYPE html>
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>layuiAdmin 控制台主页一</title>
+    <meta name="renderer" content="webkit">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=0">
+    <link rel="stylesheet" href="__STATIC__/layui/layui/css/layui.css" media="all">
+    <link rel="stylesheet" href="__STATIC__/layui/style/admin.css" media="all">
+</head>
+<body>
+    <div class="layui-tab layui-tab-brief" lay-filter="component-tabs-brief">
+        <ul class="layui-tab-title">
+            <li class="layui-this">后台菜单</li>
+            <li>添加菜单</li>
+        </ul>
+        <div class="layui-tab-content">
+            <div class="layui-tab-item layui-show">
+                <a class="layui-btn layui-btn-primary layui-btn-xs layui-btn-xstree"  onclick="window.location.href='index.html';">刷新</a>
+                <a class="layui-btn layui-btn-primary layui-btn-xs layui-btn-xstree"  onclick="reload()">reload</a>
+                <a class="layui-btn layui-btn-primary layui-btn-xs layui-btn-xstree"  onclick="query()">query</a>
+                <a class="layui-btn layui-btn-primary layui-btn-xs layui-btn-xstree"  onclick="add(null);">新增一行</a>
+                <a class="layui-btn layui-btn-primary layui-btn-xs layui-btn-xstree"  onclick="openorclose();">隐藏或打开香蕉节点</a>
+                <a class="layui-btn layui-btn-primary layui-btn-xs layui-btn-xstree"  onclick="getCheckData();">获取选中行数据</a>
+                <a class="layui-btn layui-btn-primary layui-btn-xs layui-btn-xstree"  onclick="getCheckLength();">获取选中数目</a>
+                <a class="layui-btn layui-btn-primary layui-btn-xs layui-btn-xstree"  onclick="print();">打印缓存对象</a>
+                <a class="layui-btn layui-btn-primary layui-btn-xs layui-btn-xstree"  onclick="openAll();">展开或折叠全部</a>
+                <a class="layui-btn layui-btn-primary layui-btn-xs layui-btn-xstree"  onclick="radioStatus();">获取单选数据</a>
+                <a class="layui-btn layui-btn-primary layui-btn-xs layui-btn-xstree"  onclick="test();">test</a>
+                <br>
+                <table class="layui-hidden" id="treeTable" lay-filter="treeTable"></table>
+                <script type="text/html" id="test-table-toolbar-toolbarDemo">
+                    <div class="layui-btn-container">
+                        <button class="layui-btn layui-btn-sm" lay-event="getCheckData">获取选中行数据</button>
+                        <button class="layui-btn layui-btn-sm" lay-event="getCheckLength">获取选中数目</button>
+                        <button class="layui-btn layui-btn-sm" lay-event="isAll">验证是否全选</button>
+                    </div>
+                </script>
+            </div>
+            <div class="layui-tab-item">
+                <div class="layui-card">
+                    <form class="layui-form" method="post" action="{:url('Menus/addPost')}" lay-filter="component-form-element">
+                        <div class="layui-row layui-col-space10 layui-form-item">
+                            <div class="layui-col-lg6">
+                                <label class="layui-form-label">父级菜单：</label>
+                                <div class="layui-input-block">
+                                    <input type="text" name="parent_id" id="tree" lay-filter="tree" class="layui-input" value="0">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="layui-row layui-col-space10 layui-form-item">
+                            <div class="layui-col-lg6">
+                                <label class="layui-form-label"><span style="color:red;">*</span>菜单名称：</label>
+                                <div class="layui-input-block">
+                                    <input type="text" name="name" lay-verify="required" placeholder="请输入名称" autocomplete="off" class="layui-input">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="layui-row layui-col-space10 layui-form-item">
+                            <div class="layui-col-lg6">
+                                <label class="layui-form-label"><span style="color:red;">*</span>应用名称：</label>
+                                <div class="layui-input-block">
+                                    <input type="text" name="app" lay-verify="required" placeholder="请输入名称" autocomplete="off" class="layui-input">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="layui-row layui-col-space10 layui-form-item">
+                            <div class="layui-col-lg6">
+                                <label class="layui-form-label"><span style="color:red;">*</span>控制器名：</label>
+                                <div class="layui-input-block">
+                                    <input type="text" name="controller" lay-verify="required" placeholder="请输入控制器名" autocomplete="off" class="layui-input">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="layui-row layui-col-space10 layui-form-item">
+                            <div class="layui-col-lg6">
+                                <label class="layui-form-label"><span style="color:red;">*</span>方法名称：</label>
+                                <div class="layui-input-block">
+                                    <input type="text" name="action" lay-verify="required" placeholder="请输入方法名" autocomplete="off" class="layui-input">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="layui-row layui-col-space10 layui-form-item">
+                            <div class="layui-col-lg6">
+                                <label class="layui-form-label">菜单参数：</label>
+                                <div class="layui-input-block">
+                                    <input type="text" name="param" placeholder="请输入参数" autocomplete="off" class="layui-input">
+                                    <p>例：id=1&p=1</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="layui-row layui-col-space10 layui-form-item">
+                            <div class="layui-col-lg6">
+                                <label class="layui-form-label">菜单图标：</label>
+                                <div class="layui-input-block">
+                                    <input type="text" name="icon" value="layui-icon-rate-solid" id="iconPicker" lay-filter="iconPicker" class="layui-input">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="layui-row layui-col-space10 layui-form-item">
+                            <div class="layui-col-lg6">
+                                <label class="layui-form-label">菜单备注：</label>
+                                <div class="layui-input-block">
+                                    <textarea name="remark" placeholder="请输入" class="layui-textarea"></textarea>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="layui-row layui-col-space10 layui-form-item">
+                            <div class="layui-col-lg6">
+                                <label class="layui-form-label">菜单状态：</label>
+                                <div class="layui-input-block">
+                                    <input type="checkbox" name="status" lay-skin="switch" value="1" lay-text="显示|隐藏" checked>
+                                    <span>是否在左侧菜单显示</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="layui-row layui-col-space10 layui-form-item">
+                            <div class="layui-col-lg6">
+                                <label class="layui-form-label">菜单类型：</label>
+                                <div class="layui-input-block">
+                                    <input type="text" name="type" placeholder="请输入标题" autocomplete="off" class="layui-input">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="layui-row layui-col-space10 layui-form-item">
+                            <div class="layui-col-lg6">
+                                <div class="layui-input-block">
+                                    <button class="layui-btn" lay-submit lay-filter="component-form-element">立即提交</button>
+                                    <button type="reset" class="layui-btn layui-btn-primary">重置</button>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</body>
+<script src="__STATIC__/layui/layui/layui.js"></script>
+<script>
+    layui.config({
+        base: '__STATIC__/layui/' //静态资源所在路径
+    }).extend({
+        index: 'lib/index' //主入口模块
+    }).use(['index','treeGrid','form','iconPicker','treeSelect'], function(){
+        var $ = layui.$
+            ,element = layui.element
+        element.render();
+
+
+        //以下为表格内容
+        var treeGrid = layui.treeGrid;//很重要
+
+        ptable=treeGrid.render({
+            id:'treeTable'
+            ,elem: '#treeTable'
+            ,url:"{:url('Menus/index')}"
+            ,cellMinWidth: 100
+            ,idField:'id'//必須字段
+            ,treeId:'id'//树形id字段名称
+            ,treeUpId:'parent_id'//树形父id字段名称
+            ,treeShowName:'name'//以树形式显示的字段
+            ,heightRemove:[".dHead",10]//不计算的高度,表格设定的是固定高度，此项不生效
+            ,height:'100%'
+            ,isFilter:false
+            ,iconOpen:false//是否显示图标【默认显示】
+            ,isOpenDefault:true//节点默认是展开还是折叠【默认展开】
+            ,loading:true
+            ,method:'post'
+            ,isPage:false
+            ,cols: [[
+                {field:'id',width:50,title: 'id'}
+                ,{field:'name', title: '水果名称',edit:'text'}
+                ,{title: '操作', align:'center'/*toolbar: '#barDemo'*/
+                    ,templet: function(d){
+                        var html='';
+                        var addBtn='<a class="layui-btn layui-btn-primary layui-btn-xs" lay-event="add">添加</a>';
+                        var delBtn='<a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del">删除</a>';
+                        return addBtn+delBtn;
+                    }
+                }
+            ]]
+            ,onClickRow:function (index, o) {
+                console.log(index,o,"单击！");
+            }
+            ,onDblClickRow:function (index, o) {
+                console.log(index,o,"双击");
+            }
+        });
+
+        treeGrid.on('tool(treeTable)',function (obj) {
+            if(obj.event === 'del'){
+               //alert(123);
+                del(obj);
+            }else if(obj.event==="add"){
+                //alert(321);
+                add(obj);
+            }
+        });
+
+
+        //以下为form
+        var form = layui.form;
+
+        form.on('submit(component-form-element)', function(data){
+            //console.log(JSON.stringify(data.field));
+            $.post("{:url('Menus/addPost')}",data.field,function(res){
+                //console.log(res.msg);
+                if(res.code){
+                    layer.msg(res.msg, {time: 2000});
+                    //var url = "{:url('Menus/index')}";
+                    //setTimeout(window.location.href=url,2000);
+                }else{
+                    layer.msg(res.msg, {time: 2000});
+                }
+            },'json');
+            return false;
+        });
+
+        //以下为ICON
+        var iconPicker = layui.iconPicker;
+
+        iconPicker.render({
+            // 选择器，推荐使用input
+            elem: '#iconPicker',
+            // 数据类型：fontClass/unicode，推荐使用fontClass
+            type: 'fontClass',
+            // 是否开启搜索：true/false
+            search: false,
+            // 点击回调
+            click: function (data) {
+                console.log(data);
+            }
+        });
+
+        /**
+         * 选中图标 （常用于更新时默认选中图标）
+         * @param filter lay-filter
+         * @param iconName 图标名称，自动识别fontClass/unicode
+         */
+        iconPicker.checkIcon('iconPicker', 'layui-icon-star-fill');
+
+        //以下为treeSelect
+        var treeSelect= layui.treeSelect;
+
+        treeSelect.render({
+            // 选择器
+            elem: '#tree',
+            // 数据
+            data: "{:url('Menus/addMenu')}",
+            // 异步加载方式：get/post，默认get
+            type: 'get',
+            // 占位符
+            placeholder: '作为一级菜单',
+
+            checked:true,
+
+            // 点击回调
+            click: function(d){
+                console.log(d);
+            },
+            // 加载完成后的回调函数
+            success: function (d) {
+                console.log(d);
+//                选中节点，根据id筛选
+//                treeSelect.checkNode('tree', 3);
+
+//                获取zTree对象，可以调用zTree方法
+//                var treeObj = treeSelect.zTree('tree');
+//                console.log(treeObj);
+
+//                刷新树结构
+//                treeSelect.refresh();
+            }
+        });
+    });
+
+    function add(Obj) {
+        alert(123);
+        var pdata=pObj?pObj.data:null;
+        var param={};
+        param.name='水果'+Math.random();
+        param.id=++i;
+        param.pId=pdata?pdata.id:null;
+        treeGrid.addRow(tableId,pdata?pdata[treeGrid.config.indexName]+1:0,param);
+    }
+
+    function del(obj) {
+        layer.confirm("你确定删除数据吗？如果存在下级节点则一并删除，此操作不能撤销！", {icon: 3, title:'提示'},
+            function(index){//确定回调
+                obj.del();
+                layer.close(index);
+            },function (index) {//取消回调
+                layer.close(index);
+            }
+        );
+    }
+</script>
+</html>
